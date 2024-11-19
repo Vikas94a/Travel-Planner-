@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <section id="add-trip">
+      <h2 class="trip">Explore-Ease</h2>
+      <form id="travel-form">
+        <label for="destination">
+          Destination: <span class="required">*</span></label
+        >
+        <input type="text" name="destination" id="destination" required />
+        <label for="start-date"
+          >Start Date: <span class="required">*</span></label
+        >
+        <input
+          type="datetime-local"
+          name="start-date"
+          id="start-date"
+          required
+        />
+        <label for="end-date">End Date: <span class="required">*</span></label>
+        <input type="datetime-local" name="end-date" id="end-date" required />
+        <input type="submit" id="submit" />
+      </form>
+
+      <!-- New section for displaying tasks -->
+      <div id="task-list-container">
+        <h3 class="task-list-heading">Planned Trips</h3>
+        <div id="task-list"></div>
+      </div>
+
+      <div class="dynnamic-container">
+        <form class="dynnamic-form">
+          <h2 id="task-form"></h2>
+          <label for="name"></label>
+          <input type="text" name="name" id="name" />
+          <label for="date">Start Date</label>
+          <input
+            type="datetime-local"
+            name="Start-date"
+            id="dynamic-start-date"
+          />
+          <label for="dynamic-end-date">End date</label>
+          <input type="datetime-local" name="End-date" id="dynamic-end-date" />
+          <label for="cost">Toal cost</label>
+          <input type="number" id="cost" name="cost" placeholder="Enter cost" />
+          <input type="submit" value="Save" id="save" />
+        </form>
+      </div>
+    </section>
+  </body>
+</html>
