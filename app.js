@@ -6,10 +6,10 @@ const taskListContainer = document.querySelector("#task-list");
 const taskForm = document.querySelector("#travel-form");
 const plans = document.querySelector("#plan-option");
 const saveBtn = document.querySelector("#save");
-
+let currentTripIndex = null;
 // task array
 let trips = [];
-
+loadTasksFromLocalStorage();
 // event listner for Submit button
 taskForm.addEventListener("submit", (e) => {
   e.preventDefault(); // prevent page reload
@@ -21,53 +21,58 @@ taskForm.addEventListener("submit", (e) => {
     tasks: [],
     complete: false,
   });
-  appendTask(trips);
+  saveTaskToLocalStorage();
+  appendTrip(trips);
 });
 
-function appendTask(taskArr) {
+function appendTrip(taskArr) {
+  // Clear existing trips
   while (taskListContainer.firstChild) {
     taskListContainer.removeChild(taskListContainer.firstChild);
   }
 
-  taskArr.forEach((e) => {
-    // container for the task
-    const taskContainer = document.createElement("div");
-    taskContainer.classList.add("task-container");
+  taskArr.forEach((trip) => {
+    const tripContainer = document.createElement("div");
+    tripContainer.classList.add("trip-container");
 
-    // start date
+    // Display trip details
     const startDateElem = document.createElement("p");
-    startDateElem.textContent = `Start Date:-${e.startDate}`;
-
-    // end-date
+    startDateElem.textContent = `Start Date: ${trip.startDate}`;
     const endDateElem = document.createElement("p");
-    endDateElem.textContent = `End Date:-${e.endDate}`;
-
-    //location
+    endDateElem.textContent = `End Date: ${trip.endDate}`;
     const destinationElem = document.createElement("p");
-    destinationElem.textContent = `Destination:${e.tripDestination}`;
-    // add More task button
+    destinationElem.textContent = `Destination: ${trip.tripDestination}`;
+
+    // Add task button
     const addPlan = document.createElement("button");
     addPlan.classList.add("add-Button");
     addPlan.textContent = "+";
     let buttonAdded = false;
-
     let buttonsContainer;
-    // event listner for add button s
+
+    // Toggle buttons on click
     addPlan.addEventListener("click", () => {
       if (!buttonAdded) {
         addPlan.textContent = "-";
-        buttonsContainer = createPlanButtons(taskContainer);
+        buttonsContainer = createPlanButtons(tripContainer);
         buttonAdded = true;
-      } else if (buttonAdded) {
+        currentTripIndex = trips.indexOf(trip);
+      } else {
         addPlan.textContent = "+";
-        buttonsContainer.style.display = " none";
+        buttonsContainer.style.display = "none";
         buttonAdded = false;
       }
     });
 
-    taskContainer.append(destinationElem, startDateElem, endDateElem, addPlan);
+    tripContainer.append(destinationElem, startDateElem, endDateElem, addPlan);
 
-    taskListContainer.append(taskContainer);
+    // Append task container
+    const taskContainer = document.createElement("div");
+    taskContainer.classList.add("tasks-container");
+    appendTask(trip.tasks, taskContainer);
+    tripContainer.append(taskContainer);
+
+    taskListContainer.append(tripContainer);
   });
 }
 
@@ -109,14 +114,14 @@ function createPlanButtons(container) {
 }
 
 // function for dynamically buttons
-
+const dynamicallForm = document.querySelector(".dynnamic-container");
 function buttonsAction(button) {
-  const dynamicallForm = document.querySelector(".dynnamic-container");
   const taskForm = document.querySelector("#task-form");
   const inputName = document.querySelector("#name");
   const inputNameLabel = document.querySelector("label[for='name']");
 
   button.addEventListener("click", () => {
+    dynamicallForm.style.display = "block"; // added new
     if (button.textContent === "Flight") {
       dynamicallForm.style.display = "block";
       taskForm.textContent = `Add flight Details`;
@@ -152,20 +157,72 @@ function buttonsAction(button) {
 const dynamicStartDate = document.querySelector("#dynamic-start-date");
 const dynamicEndDate = document.querySelector("#dynamic-end-date");
 const budget = document.querySelector("#cost");
-const dynamicForm = document.querySelector("#dynnamic-form");
+const dynamicForm = document.querySelector(".dynnamic-form");
+const inputName = document.querySelector("#name");
+
+console.log(dynamicForm);
 
 // dynamicallForm save button addEventListener
-saveBtn.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const formData = new FormData(dynamicForm);
-  trips.forEach((e) => {
-    e.tasks.push({
-      name: formData.get("inputName"),
-      startDate: formData.get("dynamicStartDate"),
-      endDate: formData.get("dynamicEndDate"),
-      taskBudget: formData.get("budget"),
+saveBtn.addEventListener("click", (e) => {
+  e.preventDefault(); // (refreshing page)
+  console.log("button clicked");
+
+  const taskName = inputName.value;
+  const startDate = dynamicStartDate.value;
+  const endDate = dynamicEndDate.value;
+  const taskBudget = budget.value;
+
+  if (taskName && startDate && endDate && taskBudget) {
+    const currentTrip = trips[currentTripIndex]; // Get the most recent trip
+
+    // Add task to the current trip's task array
+    currentTrip.tasks.push({
+      name: taskName,
+      startDate: startDate,
+      endDate: endDate,
+      taskBudget: taskBudget,
     });
-  });
+
+    saveTaskToLocalStorage();
+    appendTrip(trips);
+    dynamicForm.style.display = "none";
+    // Hide the form
+  } else {
+    alert("Please fill in all fields.");
+
+    // Hide the dynamic form after task is saved
+    dynamicallForm.style.display = "none";
+  }
 });
 
-console.log(trips);
+function appendTask(taskArr, container) {
+  taskArr.forEach((task) => {
+    const taskContainer = document.createElement("div");
+    taskContainer.classList.add("task-container");
+
+    const nameElem = document.createElement("p");
+    nameElem.classList.add("name-Elem");
+    nameElem.textContent = `Task Name: ${task.name}`;
+    const startDateElem = document.createElement("p");
+    startDateElem.textContent = `Start Date: ${task.startDate}`;
+    const endDateElem = document.createElement("p");
+    endDateElem.textContent = `End Date: ${task.endDate}`;
+    const budgetElem = document.createElement("p");
+    budgetElem.textContent = `Total Cost: ${task.taskBudget}`;
+
+    taskContainer.append(nameElem, startDateElem, endDateElem, budgetElem);
+    container.append(taskContainer);
+  });
+}
+
+function saveTaskToLocalStorage() {
+  localStorage.setItem("trips", JSON.stringify(trips));
+}
+
+function loadTasksFromLocalStorage() {
+  const storedTasks = localStorage.getItem("trips");
+  if (storedTasks) {
+    trips = JSON.parse(storedTasks);
+    appendTrip(trips);
+  }
+}

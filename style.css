@@ -1,4 +1,12 @@
-/* Container styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #5eb1bf;
+}
 #add-trip {
   width: 100%;
   max-width: 600px;
@@ -6,7 +14,6 @@
   padding: 1.5rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #f9f9f9;
 }
 
 #task-list-container {
@@ -74,7 +81,6 @@
   border-radius: 10px;
   padding: 20px;
   width: 350px;
-  font-family: "Arial", sans-serif;
 }
 
 /* Style for the form */
@@ -109,13 +115,7 @@
   transition: border 0.3s ease-in-out;
 }
 
-/* Hover and focus effects for inputs */
-.dynnamic-form input:hover,
-.dynnamic-form input:focus {
-  border: 1px solid #007bff;
-}
-
-/* Button (optional styling for a submit button if added) */
+/* Button  */
 .dynnamic-form button {
   padding: 10px;
   font-size: 14px;
@@ -129,4 +129,9 @@
 
 .dynnamic-form button:hover {
   background-color: #0056b3;
+}
+
+.name-Elem {
+  font-size: 2rem;
+  text-transform: capitalize;
 }
