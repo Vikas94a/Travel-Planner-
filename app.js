@@ -12,7 +12,9 @@ let trips = [];
 loadTasksFromLocalStorage();
 // event listner for Submit button
 taskForm.addEventListener("submit", (e) => {
+  console.log("b");
   e.preventDefault(); // prevent page reload
+
   const formData = new FormData(taskForm);
   trips.push({
     tripDestination: formData.get("destination"),
@@ -21,8 +23,12 @@ taskForm.addEventListener("submit", (e) => {
     tasks: [],
     complete: false,
   });
+
   saveTaskToLocalStorage();
   appendTrip(trips);
+  destination.value = "";
+  startDate.value = "";
+  endDate.value = "";
 });
 
 function appendTrip(taskArr) {
@@ -37,11 +43,14 @@ function appendTrip(taskArr) {
 
     // Display trip details
     const startDateElem = document.createElement("p");
-    startDateElem.textContent = `Start Date: ${trip.startDate}`;
+    startDateElem.textContent = `Start Date-: ${trip.startDate}`;
+    startDateElem.classList.add("startDate-elem");
     const endDateElem = document.createElement("p");
+    endDateElem.classList.add("endDate-Elem");
     endDateElem.textContent = `End Date: ${trip.endDate}`;
     const destinationElem = document.createElement("p");
-    destinationElem.textContent = `Destination: ${trip.tripDestination}`;
+    destinationElem.textContent = `${trip.tripDestination}`;
+    destinationElem.classList.add("destination-Elem");
 
     // Add task button
     const addPlan = document.createElement("button");
@@ -55,6 +64,7 @@ function appendTrip(taskArr) {
       if (!buttonAdded) {
         addPlan.textContent = "-";
         buttonsContainer = createPlanButtons(tripContainer);
+
         buttonAdded = true;
         currentTripIndex = trips.indexOf(trip);
       } else {
@@ -63,12 +73,25 @@ function appendTrip(taskArr) {
         buttonAdded = false;
       }
     });
+    //  append total cost of trip
+    const budgetContainer = document.createElement("div");
+    budgetContainer.classList.add("budget-container");
+    tripCost(budgetContainer, trip);
 
-    tripContainer.append(destinationElem, startDateElem, endDateElem, addPlan);
+    // tripCost(tripContainer);
+
+    tripContainer.append(
+      destinationElem,
+      startDateElem,
+      endDateElem,
+      addPlan,
+      budgetContainer
+    );
 
     // Append task container
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("tasks-container");
+
     appendTask(trip.tasks, taskContainer);
     tripContainer.append(taskContainer);
 
@@ -79,26 +102,35 @@ function appendTrip(taskArr) {
 // function for creating buttons dynamicall
 function createPlanButtons(container) {
   const buttonsContainer = document.createElement("div");
+  buttonsContainer.classList.add("buttons-Container");
   //flight button
   const flightBtn = document.createElement("button");
-  flightBtn.textContent = "Flight";
-  buttonsAction(flightBtn); //******** */
+  flightBtn.classList.add("flight-btn");
+  flightBtn.textContent = "🛫";
+  buttonsAction(flightBtn);
+
+  //******** */
   //transport button
   const transportBtn = document.createElement("button");
-  transportBtn.textContent = "Transportation";
+  transportBtn.textContent = "🚌";
+  transportBtn.classList.add("transport-btn");
   buttonsAction(transportBtn);
   // hotel button
   const hotelBtn = document.createElement("button");
-  hotelBtn.textContent = "Hotel";
+  hotelBtn.classList.add("hotel-btn");
+  hotelBtn.textContent = "🏨";
   buttonsAction(hotelBtn);
+
   // restaurant button
   const restaurantBtn = document.createElement("button");
-  restaurantBtn.textContent = "Restaurant";
+  restaurantBtn.classList.add("restaurant-btn");
+  restaurantBtn.textContent = "🍽️";
   buttonsAction(restaurantBtn);
 
   // activity button
   const activityBtn = document.createElement("button");
-  activityBtn.textContent = "Activity";
+  activityBtn.classList.add("activity-btn");
+  activityBtn.textContent = "🎡";
   buttonsAction(activityBtn);
 
   buttonsContainer.append(
@@ -113,41 +145,44 @@ function createPlanButtons(container) {
   return buttonsContainer;
 }
 
-// function for dynamically buttons
 const dynamicallForm = document.querySelector(".dynnamic-container");
+// function for dynamically buttons
+
 function buttonsAction(button) {
   const taskForm = document.querySelector("#task-form");
   const inputName = document.querySelector("#name");
   const inputNameLabel = document.querySelector("label[for='name']");
 
   button.addEventListener("click", () => {
-    dynamicallForm.style.display = "block"; // added new
-    if (button.textContent === "Flight") {
+    // added new
+    if (button.textContent === "🛫") {
       dynamicallForm.style.display = "block";
-      taskForm.textContent = `Add flight Details`;
+      taskForm.textContent = `Add flight Details 🛫`;
       inputNameLabel.textContent = "Flight-Number";
       inputName.placeholder = "Enter Flight number";
       inputName.value = "";
-    } else if (button.textContent === "Transportation") {
+    } else if (button.textContent === "🚌") {
       dynamicallForm.style.display = "block";
-      taskForm.textContent = "Add Transportation Details";
+      taskForm.textContent = "Add Transportation Details 🚌";
       inputNameLabel.textContent = "Transport mode";
       inputName.value = "";
-    } else if (button.textContent === "Hotel") {
+    } else if (button.textContent === "🏨") {
       dynamicallForm.style.display = "block";
-      taskForm.textContent = " Add Hotel Details";
+      taskForm.textContent = " Add Hotel Details 🏨";
       inputNameLabel.textContent = "Hotel Name & Address";
       inputName.placeholder = "Please Enter Hotel Name &Address";
       inputName.value = "";
-    } else if (button.textContent === "Restaurant") {
+      autoSuggestion(inputName);
+    } else if (button.textContent === "🍽️") {
       dynamicallForm.style.display = "block";
-      taskForm.textContent = " Add Restaurant Details";
+      taskForm.textContent = " Add Restaurant Details 🍽️";
       inputNameLabel.textContent = "Restaurant Name & Address";
       inputName.placeholder = "Please Enter Restaurant Name & Address";
       inputName.value = "";
-    } else if (button.textContent === "Activity") {
+      autoSuggestion(inputName);
+    } else if (button.textContent === "🎡") {
       dynamicallForm.style.display = "block";
-      taskForm.textContent = " Add Activity Details";
+      taskForm.textContent = " Add Activity Details 🎡";
       inputNameLabel.textContent = "Activity Name";
       inputName.value = "";
     }
@@ -159,8 +194,6 @@ const dynamicEndDate = document.querySelector("#dynamic-end-date");
 const budget = document.querySelector("#cost");
 const dynamicForm = document.querySelector(".dynnamic-form");
 const inputName = document.querySelector("#name");
-
-console.log(dynamicForm);
 
 // dynamicallForm save button addEventListener
 saveBtn.addEventListener("click", (e) => {
@@ -185,10 +218,10 @@ saveBtn.addEventListener("click", (e) => {
 
     saveTaskToLocalStorage();
     appendTrip(trips);
-    dynamicForm.style.display = "none";
+    dynamicallForm.style.display = "none";
     // Hide the form
   } else {
-    alert("Please fill in all fields.");
+    console.log("error");
 
     // Hide the dynamic form after task is saved
     dynamicallForm.style.display = "none";
@@ -204,15 +237,32 @@ function appendTask(taskArr, container) {
     nameElem.classList.add("name-Elem");
     nameElem.textContent = `Task Name: ${task.name}`;
     const startDateElem = document.createElement("p");
+    startDateElem.classList.add("taskstart-date");
     startDateElem.textContent = `Start Date: ${task.startDate}`;
     const endDateElem = document.createElement("p");
     endDateElem.textContent = `End Date: ${task.endDate}`;
+    endDateElem.classList.add("taskendDate-elem");
     const budgetElem = document.createElement("p");
-    budgetElem.textContent = `Total Cost: ${task.taskBudget}`;
+    budgetElem.classList.add("budget-elem");
+    budgetElem.textContent = `Total Cost: ${task.taskBudget} NOK`;
 
     taskContainer.append(nameElem, startDateElem, endDateElem, budgetElem);
     container.append(taskContainer);
   });
+}
+
+function tripCost(container, trip) {
+  const tripCost = document.createElement("p");
+
+  const totalCost = trip.tasks.reduce(
+    (sum, task) => sum + Number(task.taskBudget),
+    0
+  );
+  trip.cost = totalCost;
+
+  tripCost.textContent = `Total Cost: ${totalCost} NOK`;
+
+  container.append(tripCost);
 }
 
 function saveTaskToLocalStorage() {

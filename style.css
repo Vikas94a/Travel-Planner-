@@ -9,11 +9,54 @@ body {
 }
 #add-trip {
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 1.5rem;
   border: 1px solid #ddd;
   border-radius: 8px;
+  background-color: whitesmoke;
+  position: relative;
+}
+
+.form-section {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  margin: 30px 0;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-section input {
+  width: 150px;
+  height: 36px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border 0.3s ease-in-out;
+}
+/* .submit-btn {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+} */
+
+#submit {
+  align-items: center;
+  width: 90px;
+  height: 40px;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  background-color: yellow;
+  color: rgb(94, 57, 57);
+  border: 2px solid blue;
+  border-radius: 9px;
+}
+
+#travel-form label {
+  display: inline-block;
 }
 
 #task-list-container {
@@ -59,14 +102,32 @@ body {
 }
 
 .add-Button {
-  width: 30%;
-  display: block;
-  background-color: blue;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  align-items: center;
+
+  height: 40px;
+  width: 40px;
+  border: 2px solid rgb(184, 184, 184);
+  border-radius: 50px;
+  margin-left: 50%;
+  background-color: #ff7043;
+  margin-bottom: 40px;
 }
 
 .task-container {
-  background-color: rebeccapurple;
+  background-color: #fff3e0;
+
+  margin: 8px;
+}
+
+.task-container > * {
+  padding: 4px;
+  color: #4a4a4a;
+}
+
+.budget-elem {
+  font-size: 1.3rem;
+  color: red;
 }
 
 /* Style for the overall dynamic container */
@@ -127,11 +188,85 @@ body {
   transition: background-color 0.3s ease-in-out;
 }
 
-.dynnamic-form button:hover {
-  background-color: #0056b3;
+.name-Elem {
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  color: #4a4a4a;
 }
 
-.name-Elem {
-  font-size: 2rem;
+/* country suggestion-div  */
+#suggestions-container {
+  position: absolute;
+  left: 27px;
+  width: 50%;
+  height: 200px;
+  background-color: transparent;
+}
+
+.suggestion-div {
+  display: flex;
+  background-color: red;
+  height: auto;
+  width: 30%;
+  font-size: 1.2rem;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid black;
+}
+
+.trip-container {
+  background-color: #c7e8ff;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: relative;
+  padding: 5px;
+}
+.destination-Elem {
+  font-size: 1.5rem;
+  color: #342d2d;
+}
+
+.startDate-elem,
+.endDate-Elem {
+  font-size: 0.9rem;
+  padding-top: 5px;
   text-transform: capitalize;
+}
+
+.buttons-Container {
+  padding: 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 110px;
+  left: 17px;
+}
+
+.flight-btn,
+.transport-btn,
+.hotel-btn,
+.restaurant-btn,
+.activity-btn {
+  margin: 14px;
+  height: 35px;
+  width: 35px;
+  border: 2px solid rgb(184, 184, 184);
+  border-radius: 50px;
+  background-color: #29b6f6;
+  font-size: 1.4rem;
+}
+
+.budget-container {
+  background-color: yellow;
+  width: 35%;
+  position: absolute;
+  left: 60%;
+  font-size: 1.2rem;
+  color: red;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
 }
