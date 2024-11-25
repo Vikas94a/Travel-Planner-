@@ -78,14 +78,13 @@ function appendTrip(taskArr) {
     budgetContainer.classList.add("budget-container");
     tripCost(budgetContainer, trip);
 
-    // tripCost(tripContainer);
-
     tripContainer.append(
       destinationElem,
       startDateElem,
       endDateElem,
       addPlan,
       budgetContainer
+      // currencyConversionContainer
     );
 
     // Append task container
@@ -228,11 +227,12 @@ saveBtn.addEventListener("click", (e) => {
   }
 });
 
-function appendTask(taskArr, container) {
+// append task
+function appendTask(taskArr, container, trip) {
   taskArr.forEach((task) => {
+    // taskContainer for tasks
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("task-container");
-
     const nameElem = document.createElement("p");
     nameElem.classList.add("name-Elem");
     nameElem.textContent = `Task Name: ${task.name}`;
@@ -247,24 +247,36 @@ function appendTask(taskArr, container) {
     budgetElem.textContent = `Total Cost: ${task.taskBudget} NOK`;
 
     taskContainer.append(nameElem, startDateElem, endDateElem, budgetElem);
-    container.append(taskContainer);
+    container.append(taskContainer); // append in container
   });
+  // country Mapping
 }
 
+// function to calculate and display the total cost for trip
 function tripCost(container, trip) {
   const tripCost = document.createElement("p");
 
+  // calculate the total cost of all task in the trip by summing up task budgets
   const totalCost = trip.tasks.reduce(
     (sum, task) => sum + Number(task.taskBudget),
     0
   );
   trip.cost = totalCost;
+  tripCost.textContent = `Total Cost:- ${totalCost} NOK`; // total cost in NOK
 
-  tripCost.textContent = `Total Cost: ${totalCost} NOK`;
+  // countryMapping.js
+  const destinationLower = trip.tripDestination.toLowerCase(); // Handle case insensitivity
+  const targetCurrency =
+    Object.keys(countryName).find(
+      (code) => countryName[code].toLowerCase() === destinationLower
+    ) || "inr"; // Default to INR
 
-  container.append(tripCost);
+  // call the currencyConveter function
+  currencyConverter(targetCurrency, totalCost, container);
+  container.append(tripCost); // apped total cost
 }
 
+// function for local storage
 function saveTaskToLocalStorage() {
   localStorage.setItem("trips", JSON.stringify(trips));
 }
