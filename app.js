@@ -269,18 +269,19 @@ function tripCost(container, trip) {
   const targetCurrency =
     Object.keys(countryName).find(
       (code) => countryName[code].toLowerCase() === destinationLower
-    ) || "inr"; // Default to INR
+    ) || "usd"; // Default to INR
 
   // call the currencyConveter function
   currencyConverter(targetCurrency, totalCost, container);
   container.append(tripCost); // apped total cost
 }
 
-// function for local storage
+// function to save in local storage
 function saveTaskToLocalStorage() {
   localStorage.setItem("trips", JSON.stringify(trips));
 }
 
+// function to load from local storage
 function loadTasksFromLocalStorage() {
   const storedTasks = localStorage.getItem("trips");
   if (storedTasks) {

@@ -9,16 +9,16 @@ autoSuggestion(destination);
 
 // auto currencyConverter api
 async function currencyConverter(targetCurrency, amount, currenciesContainer) {
-  const baseCurrency = "nok";
+  const baseCurrency = "nok"; // defaul currency
   const converterURL = `https://latest.currency-api.pages.dev/v1/currencies/${baseCurrency}.json`;
   try {
     const response = await fetch(converterURL);
     const data = await response.json();
 
     // Access the target currency rate
-    const conversionRate = data[baseCurrency][targetCurrency];
+    const conversionRate = data[baseCurrency][targetCurrency]; // get the target currency rate
     if (data[baseCurrency] && conversionRate) {
-      const convertedAmount = amount * conversionRate;
+      const convertedAmount = amount * conversionRate; // calculate converted amount
       const currencyConversionResult = document.createElement("p");
       currencyConversionResult.textContent = `Total cost:-${convertedAmount.toFixed()} ${targetCurrency.toUpperCase()}`;
       currenciesContainer.append(currencyConversionResult);
