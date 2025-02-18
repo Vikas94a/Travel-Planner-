@@ -171,14 +171,14 @@ function buttonsAction(button) {
       inputNameLabel.textContent = "Hotel Name & Address";
       inputName.placeholder = "Please Enter Hotel Name &Address";
       inputName.value = "";
-      autoSuggestion(inputName);
+      // autoSuggestion(inputName);
     } else if (button.textContent === "🍽️") {
       dynamicallForm.style.display = "block";
       taskForm.textContent = " Add Restaurant Details 🍽️";
       inputNameLabel.textContent = "Restaurant Name & Address";
       inputName.placeholder = "Please Enter Restaurant Name & Address";
       inputName.value = "";
-      autoSuggestion(inputName);
+      // autoSuggestion(inputName);
     } else if (button.textContent === "🎡") {
       dynamicallForm.style.display = "block";
       taskForm.textContent = " Add Activity Details 🎡";
@@ -268,9 +268,10 @@ function tripCost(container, trip) {
   const destinationLower = trip.tripDestination.toLowerCase(); // Handle case insensitivity
   const targetCurrency =
     Object.keys(countryName).find(
-      (code) => countryName[code].toLowerCase() === destinationLower
-    ) || "usd"; // Default to INR
+      (code) =>   destinationLower  === countryName[code].toLowerCase())||"usd" ; // Default to INR
 
+console.log(destinationLower )
+    console.log(targetCurrency)
   // call the currencyConveter function
   currencyConverter(targetCurrency, totalCost, container);
   container.append(tripCost); // apped total cost

@@ -1,11 +1,11 @@
-const suggestionApiKey = "XYZ";
-const suggestionApiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants&location=40.714728,-73.998672&radius=500&key=${suggestionApiKey}`;
+// const suggestionApiKey = "XYZ";
+// const suggestionApiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants&location=40.714728,-73.998672&radius=500&key=${suggestionApiKey}`;
 
-// Google Api for autofill
-function autoSuggestion(inputTag) {
-  const autoComplete = new google.maps.places.Autocomplete(inputTag);
-}
-autoSuggestion(destination);
+// // Google Api for autofill
+// function autoSuggestion(inputTag) {
+//   const autoComplete = new google.maps.places.Autocomplete(inputTag);
+// }
+// autoSuggestion(destination);
 
 // auto currencyConverter api
 async function currencyConverter(targetCurrency, amount, currenciesContainer) {
